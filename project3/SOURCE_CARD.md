@@ -45,10 +45,10 @@
 ## 7. Self-check (checkpoint A)
 Tick these only after reviewing the card and confirming each statement is true.
 
-- [ ] I ran the probe for this source today and messages arrived.
-- [ ] The rate in section 3 is measured, not guessed.
-- [ ] My volume plan reaches 50,000 raw records before Session 3, with margin.
-- [ ] It needs no API key or account that takes days to get.
-- [ ] My key has a reason that fits my question.
-- [ ] I named both kinds of duplicates for my source.
-- [ ] My draft question can be answered with a time window, comparison, anomaly or join.
+- [x] I ran the probe for this source today and messages arrived.
+- [x] The rate in section 3 is measured, not guessed.
+- [x] My volume plan reaches 50,000 raw records before Session 3, with margin.
+- [x] It needs no API key or account that takes days to get.
+- [x] My key has a reason that fits my question.
+- [x] I named both kinds of duplicates for my source.
+- [x] My draft question can be answered with a time window, comparison, anomaly or join.
