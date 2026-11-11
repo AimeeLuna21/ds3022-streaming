@@ -72,4 +72,4 @@ _(replace: about 150 words, first person. What did you learn about streaming sys
 
 ## Acknowledgements
 
-_(replace: everyone who helped you and how (classmates, instructor, online sources), code you reused (for example connection code from probe.py), and any AI assistance: what for, and how you checked the result. Write "None" if there is nothing to declare.)_
+I used the course-provided `probe.py` and its Coinbase WebSocket connection example as a starting point for my producer. I used ChatGPT to help me understand the worksheet, adapt the producer to send Coinbase trade messages to Kafka, and prepare this source card. I checked the source details and measured rate against my `probe.py` output, and checked the producer output in Redpanda Console by confirming that the `coinbase_trades` topic received records across all three partitions.
