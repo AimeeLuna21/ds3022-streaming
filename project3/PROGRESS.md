@@ -15,10 +15,11 @@ Add to the entry at the end of every class, and whenever you stop working. Short
 - Blocked: None.
 
 ## Session 2.5 · Wed 11 Nov
-- Done: Coinbase producer ran; landed 51,701 raw records. Topic high-watermarks sum to 51,701.
-- Raw records so far: 51,701
+- Done: Coinbase producer ran; landed 51,701 raw records. Then: Coinbase producer reconnect tested. Topic partition counts sum to 52,446.
+- Raw records so far: 52,446
 - Next: Adapt flow.py for Coinbase, then do chaos cards D1, D2, and D4.
 - Blocked: Lander logged one Kafka commit transport error; final raw and topic counts matched.
+
 
 ## Session 3 · Thu 12 Nov
 - Done:

@@ -5,18 +5,19 @@ Tick them off in your own copy. Add an entry to **PROGRESS.md** (done / next / b
 ## Session 1 · Thu 05 Nov
 
 ### Checkpoint A: source and topic design
-- [ ] `git remote -v` shows **your** `ds3022-streaming` repository; the kit is unzipped into `project3/` and pushed
-- [ ] Probes run for at least two sources; one source chosen
-- [ ] `SOURCE_CARD.md` complete with **measured** numbers (rate, volume plan, key, duplicate identity, draft question)
-- [ ] Self-check in section 7 of the card: every box ticked
-- [ ] Repository private with the instructor added as collaborator (or kept public, your choice)
+- [X] `git remote -v` shows **your** `ds3022-streaming` repository; the kit is unzipped into `project3/` and pushed
+- [X] Probes run for at least two sources; one source chosen
+- [X] `SOURCE_CARD.md` complete with **measured** numbers (rate, volume plan, key, duplicate identity, draft question)
+- [X] Self-check in section 7 of the card: every box ticked
+- [X] Repository private with the instructor added as collaborator (or kept public, your choice)
 
 ### Checkpoint B: producer
-- [ ] Class scripts copied into `project3/` and committed before you change them
-- [ ] Topic created with `rpk topic create <topic> -p 3 -r 3` **before** the producer runs
-- [ ] Every message wrapped in the same envelope (`{"action": ..., "data": ...}`), key as on the card
-- [ ] At least 1,000 messages in the topic, spread over 3 partitions; Console screenshot in `docs/`
-- [ ] The producer survives a dropped connection (pause, reconnect) and logs what it skips
+- [X] Class scripts copied into `project3/` and committed before you change them
+- [X] Topic created with `rpk topic create <topic> -p 3 -r 3` **before** the producer runs
+- [X] Every message wrapped in the same envelope (`{"action": ..., "data": ...}`), key as on the card
+        - Note: Coinbase’s initial `subscriptions` confirmation is a control message, not a trade, and has no `product_id`. The first producer run sent it without a key; the updated producer skips it.
+- [X] At least 1,000 messages in the topic, spread over 3 partitions; Console screenshot in `docs/`
+- [X] The producer survives a dropped connection (pause, reconnect) and logs what it skips
 
 ## Session 2 · Mon 09 Nov
 
