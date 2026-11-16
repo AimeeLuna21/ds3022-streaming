@@ -37,9 +37,10 @@ Answer each in 2-4 sentences, in your own words, with your own numbers.
 
 | Card | Prediction | What I did | Numbers before → after | Explanation |
 |---|---|---|---|---|
-| D1 Crash between file and offsets | TODO | TODO | TODO | TODO |
-| D2 Poison message | TODO | TODO | TODO | TODO |
-| TODO (D3, D4 or D5) | TODO | TODO | TODO | TODO |
+| D1 Crash between file and offsets | I predict raw will increase by the new trades plus one repeated 1,000-record batch. Unique Kafka records and unique trades will increase only by the new trades because the crash happens after the file is written but before offsets are stored. | Ran `python producer.py` for about 2 minutes and stopped it; ran `python lander.py crash`, then restarted with `python lander.py`; ran `python four_numbers.py product_id,trade_id`. | Raw 52,446 → 57,472; malformed 0 → 0; unique Kafka records 52,446 → 56,472; unique product_id+trade_id 52,445 → 56,471 | The crash wrote a 1,000-record file but did not store offsets. The restart read and wrote those same records again. This is at-least-once delivery: raw contains the repeated batch, and the later flow can deduplicate it. |
+| D2 Poison message | I predict raw and malformed will each increase by 1; unique Kafka records and unique trades will stay the same. | Ran `docker exec -it redpanda-0 rpk topic produce coinbase_trades -k bad`, typed `this is not JSON`, pressed Enter and Control+C, waited for the lander to print `Landed 1 records`, then ran `python four_numbers.py product_id,trade_id`. | Raw 57,472 → 57,473; malformed 0 → 1; unique Kafka records 56,472 → 56,472; unique product_id+trade_id 56,471 → 56,471 | The lander kept running and saved the invalid JSON as malformed instead of crashing. The bad message has no trade identity, so it does not change the unique record or trade counts. |
+| D4 Source drops | I predict a brief network drop will pause the producer, which will reconnect when Wi-Fi returns. New records received after reconnect should not be duplicated. | Ran `python producer.py`, turned Wi-Fi off for 30 seconds and back on, stopped the producer after it reconnected, waited for the lander to write a file, then ran `python four_numbers.py product_id,trade_id`. | Raw 57,473 → 58,008; malformed 1 → 1; unique Kafka records 56,472 → 57,007; unique product_id+trade_id 56,471 → 57,006 | Raw, unique Kafka records, and unique trades each increased by 535; malformed stayed at 1. The reconnect added no duplicate rows. |
+
 
 ## The four numbers
 

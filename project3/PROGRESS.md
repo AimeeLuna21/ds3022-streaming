@@ -14,12 +14,17 @@ Add to the entry at the end of every class, and whenever you stop working. Short
 - Next: Save the topic screenshot, add the README acknowledgement, commit and push the producer, then continue toward 50,000 records and adapt the lander.
 - Blocked: None.
 
-## Session 2.5 · Wed 11 Nov
+## Session 2 · Wed 11 Nov
 - Done: Coinbase producer ran; landed 51,701 raw records. Then: Coinbase producer reconnect tested. Topic partition counts sum to 52,446.
 - Raw records so far: 52,446
 - Next: Adapt flow.py for Coinbase, then do chaos cards D1, D2, and D4.
 - Blocked: Lander logged one Kafka commit transport error; final raw and topic counts matched.
 
+## Session 2 · Mon 16 Nov
+- Done: Checkpoint C; chaos cards D1, D2, and D4 recorded in README.
+- Raw records so far: 58,008
+- Next: Session 3 Prefect flow and research question
+- Blocked: none 
 
 ## Session 3 · Thu 12 Nov
 - Done:
