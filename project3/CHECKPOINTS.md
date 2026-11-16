@@ -35,15 +35,15 @@ Tick them off in your own copy. Add an entry to **PROGRESS.md** (done / next / b
 ## Session 3 · Thu 12 Nov
 
 ### Checkpoint E: Prefect flow
-- [ ] **50,000 raw records landed** (hard target at the start of the session)
-- [ ] Tasks: load raw → stage → entities → marts → charts
-- [ ] The four numbers logged; two runs in a row give the same numbers
-- [ ] `python kit/make_sample.py`, then `python flow.py data/sample` runs
-- [ ] Screenshots in `docs/`: flow log with the four numbers, Prefect dashboard
+- [X] **50,000 raw records landed** (hard target at the start of the session)
+- [X] Tasks: load raw → stage → entities → marts → charts
+- [X] The four numbers logged; two runs in a row give the same numbers
+- [X] `python kit/make_sample.py`, then `python flow.py data/sample` runs
+- [X] Screenshots in `docs/`: flow log with the four numbers, Prefect dashboard
 
 ### Checkpoint F (part 1): insight
-- [ ] Research question, query, first chart (insight sprint)
-- [ ] Chart read correctly by a classmate without your help (chart swap), or fixed until it is
+- [X] Research question, query, first chart (insight sprint)
+- [X] Chart read correctly by a classmate without your help (chart swap), or fixed until it is
 
 ## Session 4 · Mon 16 Nov
 

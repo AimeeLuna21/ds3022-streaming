@@ -26,11 +26,11 @@ Add to the entry at the end of every class, and whenever you stop working. Short
 - Next: Session 3 Prefect flow and research question
 - Blocked: none 
 
-## Session 3 · Thu 12 Nov
-- Done:
-- Raw records so far:
-- Next:
-- Blocked:
+## Session 3 · Mon 16 Nov
+- Done: Completed the Coinbase Prefect flow and ran it twice with matching results. Made the 5,000-row sample and ran its flow twice with matching results. Created the USD trade-value chart; my classmate understood it without help, so no chart changes were needed. README has no TODO or replace placeholders.
+- Raw records so far: 58,022 Coinbase records.
+- Next: Complete Session 4 peer test, rubric, final project check, and submission.
+- Blocked: None.
 
 ## Session 4 · Mon 16 Nov
 - Done:
