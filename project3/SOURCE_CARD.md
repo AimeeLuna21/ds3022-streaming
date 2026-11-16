@@ -40,7 +40,7 @@
 - Which version to keep? Keep one record per product_id + trade_id; a trade is an individual event.
 
 ## 6. Research question (draft)
-- How do hourly trade counts and buy-versus-sell volume compare across products, and do changes in volume occur alongside price changes?
+- Which Coinbase product pair had the highest total USD trade value during my capture, and how did the others compare?
 
 ## 7. Self-check (checkpoint A)
 Tick these only after reviewing the card and confirming each statement is true.
