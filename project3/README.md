@@ -7,10 +7,6 @@
 
 I collected public Coinbase Exchange trade messages from `wss://ws-feed.exchange.coinbase.com` using a WebSocket, which pushes messages to the producer. I subscribed to the `matches` channel for six USD product pairs: BTC-USD, ETH-USD, SOL-USD, XRP-USD, ADA-USD, and DOGE-USD. A trade message includes the product pair, trade ID, side, size, price, sequence number, and event time. No account or API key is needed. The connection can send a subscription confirmation as well as trade messages, so the producer skips messages that do not contain trade fields.
 
-
-## How to run
-
-
 ## How to run
 
 After cloning the repository, open a terminal in the repository root, `ds3022-streaming`. Set up the environment and start Redpanda:

@@ -106,7 +106,6 @@ Three things worth noticing before you plan your time:
 | 5.6 | **Repository hygiene**: work in `project3/` of `ds3022-streaming`; no `data/raw/`, `*.duckdb`, `.venv/` or `.env` committed; `PROGRESS.md` kept each session; `dp3-submit` tag | 5 | `git ls-files`; `kit/check_project.py` | Y | |
 
 **Subtotal: ___ / 25**
-**Subtotal: ___ / 25**
 
 ---
 

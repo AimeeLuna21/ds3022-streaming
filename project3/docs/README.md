@@ -1,5 +1,4 @@
 # docs/
-# docs/
 
 Evidence for the project. These screenshots are stored in this folder and document the required checkpoints.
 
