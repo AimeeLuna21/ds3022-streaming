@@ -20,20 +20,20 @@ Add to the entry at the end of every class, and whenever you stop working. Short
 - Next: Adapt flow.py for Coinbase, then do chaos cards D1, D2, and D4.
 - Blocked: Lander logged one Kafka commit transport error; final raw and topic counts matched.
 
-## Session 2 · Mon 16 Nov
+## Session 2 · Wed 11 Nov (done Mon 16 Nov)
 - Done: Checkpoint C; chaos cards D1, D2, and D4 recorded in README.
 - Raw records so far: 58,008
 - Next: Session 3 Prefect flow and research question
 - Blocked: none 
 
-## Session 3 · Mon 16 Nov
+## Session 3 · Thu 12 Nov (done Mon 16 Nov)
 - Done: Completed the Coinbase Prefect flow and ran it twice with matching results. Made the 5,000-row sample and ran its flow twice with matching results. Created the USD trade-value chart; my classmate understood it without help, so no chart changes were needed. README has no TODO or replace placeholders.
 - Raw records so far: 58,022 Coinbase records.
 - Next: Complete Session 4 peer test, rubric, final project check, and submission.
 - Blocked: None.
 
 ## Session 4 · Mon 16 Nov
-- Done:
-- Raw records so far:
-- Next:
+- Done: Done: Peer review finished, finishing touches on grading documents, revisions to setup instructions
+- Raw records so far:58022
+- Next: turn it in 
 - Blocked:

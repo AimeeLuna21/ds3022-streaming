@@ -3,16 +3,19 @@
 **Author:** Aimee Salazar Luna  
 **DS 3022 Data Project 3, Fall 2026**
 
-## **Data source**
+## Data source
 
 I collected public Coinbase Exchange trade messages from `wss://ws-feed.exchange.coinbase.com` using a WebSocket, which pushes messages to the producer. I subscribed to the `matches` channel for six USD product pairs: BTC-USD, ETH-USD, SOL-USD, XRP-USD, ADA-USD, and DOGE-USD. A trade message includes the product pair, trade ID, side, size, price, sequence number, and event time. No account or API key is needed. The connection can send a subscription confirmation as well as trade messages, so the producer skips messages that do not contain trade fields.
 
 
 ## How to run
-From a fresh clone, install the dependencies and start the Kafka-compatible Redpanda cluster:
+
+
+## How to run
+
+After cloning the repository, open a terminal in the repository root, `ds3022-streaming`. Set up the environment and start Redpanda:
 
 ```bash
-cd ds3022-streaming
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -20,41 +23,56 @@ docker compose up -d
 docker exec -it redpanda-0 rpk topic create coinbase_trades -p 3 -r 3
 ```
 
-Open two terminals from the repository folder. In the first terminal, start the producer:
+If the topic already exists on your cluster, skip the topic-creation command.
+
+Open two more terminals in the repository root. In the first, start the producer:
+
 ```bash
-cd ds3022-streaming/project3
+cd project3
 source ../.venv/bin/activate
 python producer.py
 ```
 
-In the second terminal, start the lander:
+In the second, start the lander:
+
 ```bash
-cd ds3022-streaming/project3
+cd project3
 source ../.venv/bin/activate
 python lander.py
 ```
 
-Leave both running while collecting data. To run the full-data flow after records have been landed, start Prefect in another terminal:
+For a short producer and lander check, leave them running until the lander writes a Parquet file. Stop the producer with Control+C, wait for the lander to finish its current batch, then stop the lander. To run the full-data flow, keep collecting until at least 50,000 raw records have landed. Raw data is not included in the repository, so a fresh clone must collect its own data before running that flow.
+
+Open a third terminal in the repository root and start Prefect:
+
 ```bash
-cd ds3022-streaming/project3
+cd project3
 source ../.venv/bin/activate
 prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
 prefect server start
 ```
 
-Then, in another terminal, run the flow and the sample flow:
+Open a fourth terminal in the repository root and run the flow on the committed sample twice:
+
 ```bash
-cd ds3022-streaming/project3
+cd project3
 source ../.venv/bin/activate
-python flow.py
-python kit/make_sample.py
+python flow.py data/sample
 python flow.py data/sample
 ```
 
+After collecting at least 50,000 raw records, run the full-data flow from that same terminal:
+
+```bash
+python flow.py
+```
+
+The sample is committed, so do not run `python kit/make_sample.py` when reproducing the README’s sample results. To rebuild the sample from your collected raw data, run that command and update the sample numbers in this README afterward.
 
 ## Architecture
 producer.py → Kafka topic coinbase_trades → lander.py → raw Parquet files in data/raw/ → flow.py tasks (load_raw → stage → entities → marts → chart) → DuckDB tables, including mart_volume_by_product → charts/volume_by_product.png
 
+Screenshots: [project evidence](docs/README.md).
 
 ## Design decisions
 
@@ -91,19 +109,20 @@ From the flow log on the full data (screenshot in `docs/`):
 | Unique trades | 56,978 | 4,989 |
 
 ## Challenges / Obstacles
-Coinbase’s live message rate changed over time, and the WebSocket disconnected during my reconnect test. I also found that its trade messages could arrive as `match`, while my first lander expected `last_match`, so valid trades were initially marked malformed. I inspected the raw Parquet records and updated the lander to recognize both message types while keeping invalid JSON in the raw data. I used the course probe, producer logs, Redpanda Console, DuckDB, and Prefect to check the source, Kafka topic, landed records, and flow results.
+The Coinbase stream was uneven: my probe measured about 20.68 messages per second, but the rate varied during collection. During my reconnect test, the WebSocket closed and I also saw a temporary DNS error; the producer logged the problem, waited, and reconnected. I found a processing issue when my probe sample showed `last_match` but the stream records contained `match`, so the lander initially marked valid trades malformed. I inspected the raw JSON in Parquet, updated the lander to accept both types, and used a fresh consumer group to replay the topic. My chaos tests also showed why keeping raw data matters: the crash test produced duplicate landed records, which the flow removes, while the poison-message test stayed in raw as malformed without crashing the lander. For the analysis, I used DuckDB to sum `price * size` by product pair, then checked the results against the Prefect logs and chart. I used the probe, producer logs, Redpanda Console, Parquet, DuckDB, and Prefect to find and verify these issues.
 
 ## Analysis
 
-I asked which Coinbase USD product pair had the highest total trade value in my capture and how the other pairs compared. Using the full-capture comparison in `mart_volume_by_product`, BTC-USD had the highest observed total at $19.29 million, followed by ETH-USD at $10.85 million; SOL-USD and XRP-USD followed at $5.08 million and $3.77 million. BTC-USD’s total was about 1.78 times ETH-USD’s, which surprised me. This is a limited live capture of six selected pairs, and the Coinbase feed can drop messages, so these totals may not represent all Coinbase trading.
+Coinbase product pairs name the asset being traded against its pricing currency: BTC-USD means Bitcoin traded at a price in U.S. dollars; ETH-USD is Ether priced in dollars, and the other pairs are Solana (SOL), XRP, Cardano (ADA), and Dogecoin (DOGE), also priced in dollars. I summed each trade’s price multiplied by its size to compare total observed trade value by pair across my capture. BTC-USD was highest at $19.29 million, followed by ETH-USD at $10.85 million, SOL-USD at $5.08 million, and XRP-USD at $3.77 million. What surprised me was how concentrated the total was: BTC-USD was about 1.78 times ETH-USD and contributed nearly half of the roughly $39.40 million across all six pairs. This measures traded value, not profit or price growth. My results cover only six pairs during a limited live capture, and the Coinbase feed can drop messages without replay, so the totals may not include every trade or represent all Coinbase activity.
 
 ## Plot / Visualization
 
 ![BTC-USD had the highest USD trade value](charts/volume_by_product.png)
 
 ## Reflection
-Before this project, I thought of Kafka mainly as a place to send messages. I learned that streaming also requires tracking partitions and offsets, landing records safely, and planning for messages to appear again after a crash. My D1 experiment made at-least-once delivery concrete: the lander wrote a file before storing offsets, then replayed records when it restarted. I also learned to keep raw data when a message is malformed and handle filtering and deduplication in later steps. The source needed attention too: Coinbase sent a subscription notice, its message types did not all match my first assumptions, and the WebSocket disconnected and reconnected. I used the probe, producer logs, Redpanda Console, Parquet counts, DuckDB, and Prefect to check each stage. If I started again, I would inspect and test real source messages with the lander before collecting a large volume. I would also update my progress log as I completed each checkpoint.
+Before this project, I thought of Kafka mostly as a place where messages wait. I didn’t realize how many decisions happen after producing a message: the key sends it to a partition, offsets determine what gets read again, and a crash can create duplicates even when the original file was written. My D1 test made this click because the same batch appeared again after the lander restarted. I also learned to check a live source instead of assuming the probe told me everything. Coinbase’s real message type differed from the one I expected, and its WebSocket disconnected and reconnected. Keeping raw messages helped me investigate instead of lose data. Checking the landed files and rerunning Prefect helped me trust the results. If I started again, I’d inspect more real messages and test the producer-to-lander flow before collecting a large dataset. I’d also update my progress log as I finished each checkpoint.
 
 ## Acknowledgements
 
-I used the course-provided `probe.py` and its Coinbase WebSocket connection example as a starting point for my producer. I used ChatGPT to help me understand the worksheet, adapt the producer to send Coinbase trade messages to Kafka, and prepare this source card. I checked the source details and measured rate against my `probe.py` output, and checked the producer output in Redpanda Console by confirming that the `coinbase_trades` topic received records across all three partitions.
+I used the course-provided `probe.py` and its Coinbase WebSocket example as a starting point for my producer. I used ChatGPT for guidance understanding the worksheet and streaming concepts, explaining errors, and suggesting code changes while also evaluating my README. I checked those suggestions by running the producer, lander, and Prefect flow; inspecting the raw Parquet records; checking the topic in Redpanda Console; and comparing the flow’s counts across repeated runs.
+

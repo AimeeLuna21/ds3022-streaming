@@ -1,11 +1,20 @@
 # docs/
+# docs/
 
-Evidence the grader looks at. Save screenshots here (PNG or JPG) and show or link them from your README.
+Evidence for the project. These screenshots are stored in this folder and document the required checkpoints.
 
-Required (at least these three):
+## Checkpoint B: Kafka topic
 
-1. `topic.png`: Redpanda Console (`http://127.0.0.1:8080`) showing your topic with 3 partitions and its message count (checkpoint B).
-2. `flow_log.png`: the terminal output of your flow on the full data, with the four numbers (checkpoint E).
-3. `prefect_dashboard.png`: a completed flow run in the Prefect dashboard (checkpoint E).
+Redpanda Console showing the `coinbase_trades` topic, its three partitions, and message counts.
 
-Useful extras: the architecture diagram, before/after numbers from the chaos round, the chart before and after the chart swap.
+![Coinbase topic in Redpanda Console](topic.png)
+
+## Checkpoint E: full-data flow
+
+Terminal output showing the completed flow and its four numbers.
+
+![Full-data Prefect flow output](flow_log.png)
+
+Prefect dashboard showing completed flow runs.
+
+![Completed Prefect flow runs](prefect_dashboard.png)
