@@ -76,7 +76,7 @@ def to_row(msg):
 
         # A trade should have type last_match and include its product and trade ID.
         elif (
-            data.get("type") != "last_match"
+            data.get("type") not in ("last_match", "match")
             or data.get("product_id") is None
             or data.get("trade_id") is None
         ):
@@ -142,7 +142,7 @@ def main():
     # from the earthquake demo's quakes_lander group.
     app = Application(
         broker_address=BROKER,
-        consumer_group="coinbase_trades_lander",
+        consumer_group="coinbase_trades_lander_match_fix",
         auto_offset_reset="earliest",
         loglevel="WARNING",
     )
